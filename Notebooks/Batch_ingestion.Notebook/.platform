@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "Batch_ingestion"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "2a666495-9be8-a47b-4e27-fdbdb998b4e0"
+  }
+}

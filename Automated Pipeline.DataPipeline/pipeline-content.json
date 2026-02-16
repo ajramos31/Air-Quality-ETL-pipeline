@@ -1,0 +1,41 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "8d813b30-d405-98b1-4167-e2eeeb7a8306",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "parameters": {
+            "bdate": {
+              "value": {
+                "value": "@pipeline().parameters.bdate",
+                "type": "Expression"
+              },
+              "type": "string"
+            }
+          }
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Bronze",
+        "dependsOn": []
+      }
+    ],
+    "parameters": {
+      "bdate": {
+        "type": "string",
+        "defaultValue": "@formatDateTime(utcNow(), 'yyyyMMdd')"
+      },
+      "edate": {
+        "type": "string",
+        "defaultValue": "@formatDateTime(utcNow(), 'yyyyMMdd')"
+      }
+    }
+  }
+}
