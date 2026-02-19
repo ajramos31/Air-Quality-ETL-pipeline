@@ -1,0 +1,133 @@
+table auto_dim_location
+	lineageTag: b8fa2aab-1d06-43ca-b480-4dc805463449
+	sourceLineageTag: [dbo].[auto_dim_location]
+
+	column state_code
+		dataType: string
+		lineageTag: 66365162-9382-4db6-bf1f-8d0d63bcfafb
+		sourceLineageTag: state_code
+		summarizeBy: none
+		sourceColumn: state_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column cbsa_code
+		dataType: string
+		lineageTag: f0b4a9ea-19de-4f99-a2aa-a843d5aff50c
+		sourceLineageTag: cbsa_code
+		summarizeBy: none
+		sourceColumn: cbsa_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column county_code
+		dataType: string
+		lineageTag: 30b1e850-95a1-405d-985f-8e653558a8f4
+		sourceLineageTag: county_code
+		summarizeBy: none
+		sourceColumn: county_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column site_number
+		dataType: string
+		lineageTag: d1899c91-67dc-411f-bb02-e4f3d3204430
+		sourceLineageTag: site_number
+		summarizeBy: none
+		sourceColumn: site_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column latitude
+		dataType: double
+		lineageTag: 008f9979-13c7-442d-80e1-1988be4ee8c1
+		sourceLineageTag: latitude
+		summarizeBy: sum
+		sourceColumn: latitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column longitude
+		dataType: double
+		lineageTag: b131fcff-521d-4c7f-9c18-c061d950930e
+		sourceLineageTag: longitude
+		summarizeBy: sum
+		sourceColumn: longitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column city
+		dataType: string
+		lineageTag: e0fb8cc6-9cbd-464b-82a5-6ff028541175
+		sourceLineageTag: city
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column state_name
+		dataType: string
+		lineageTag: 6f41f091-c42d-4e28-ab67-ff242ec84e66
+		sourceLineageTag: state_name
+		summarizeBy: none
+		sourceColumn: state_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column county_name
+		dataType: string
+		lineageTag: abeab441-2fee-4aa2-8d6f-bd103654d3c2
+		sourceLineageTag: county_name
+		summarizeBy: none
+		sourceColumn: county_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column cbsa_name
+		dataType: string
+		lineageTag: 98652b71-6fab-4d13-b190-60a706f83963
+		sourceLineageTag: cbsa_name
+		summarizeBy: none
+		sourceColumn: cbsa_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column population
+		dataType: string
+		lineageTag: cbe3a96c-18fe-487c-8b34-fb0a1e5dbbee
+		sourceLineageTag: population
+		summarizeBy: none
+		sourceColumn: population
+
+		annotation SummarizationSetBy = Automatic
+
+	column location_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 5d2a5609-9154-4587-9936-5b09b5614341
+		sourceLineageTag: location_key
+		summarizeBy: sum
+		sourceColumn: location_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column region
+		dataType: string
+		lineageTag: 253b764e-d2e6-4d72-8d44-6de4c4ac98a5
+		sourceLineageTag: region
+		summarizeBy: none
+		sourceColumn: region
+
+		annotation SummarizationSetBy = Automatic
+
+	partition auto_dim_location = entity
+		mode: directLake
+		source
+			entityName: auto_dim_location
+			schemaName: dbo
+			expressionSource: 'DirectLake - team2_WH'
+

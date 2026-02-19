@@ -205,26 +205,22 @@ table fact_daily_air_quality
 
 	measure 'MoM AQI Change %' = ```
 			
-			VAR CurrentYear = SELECTEDVALUE(dim_date[year])
-			VAR CurrentMonth = SELECTEDVALUE(dim_date[month])
+			VAR CurrentValue =
+			    [Avg AQI]
 			
-			VAR CurrentMonthAvg =
+			VAR PreviousValue =
 			    CALCULATE(
-			        AVERAGE(fact_daily_air_quality[aqi])
-			    )
-			
-			VAR PriorMonthAvg =
-			    CALCULATE(
-			        AVERAGE(fact_daily_air_quality[aqi]),
+			        [Avg AQI],
 			        DATEADD(dim_date[date], -1, MONTH)
 			    )
 			
 			RETURN
-			    IF(
-			        ISBLANK(PriorMonthAvg) || PriorMonthAvg = 0,
-			        BLANK(),
-			        DIVIDE(CurrentMonthAvg - PriorMonthAvg, PriorMonthAvg)
-			    )
+			IF(
+			    ISBLANK(PreviousValue) || PreviousValue = 0,
+			    BLANK(),
+			    DIVIDE(CurrentValue - PreviousValue, PreviousValue)
+			)
+			
 			
 			```
 		lineageTag: 9d2f0ef0-82d5-4128-b69b-d70841ea8975
@@ -238,6 +234,80 @@ table fact_daily_air_quality
 			
 			```
 		lineageTag: 2e580450-b005-42a8-a7d7-02617d90f553
+
+		changedProperty = Name
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bad AQI Days YTD' = ```
+			
+			CALCULATE(
+			    DISTINCTCOUNT(fact_daily_air_quality[date_key]),
+			    fact_daily_air_quality[aqi_category] IN {
+			        "Unhealthy",
+			        "Very Unhealthy",
+			        "Hazardous"
+			    },
+			    DATESYTD(dim_date[date])
+			)
+			
+			
+			```
+		formatString: 0
+		lineageTag: 6bd52241-6cd0-4164-8eab-0a05fa42a79b
+
+		changedProperty = Name
+
+	measure 'State Rank' = ```
+			
+			RANKX(
+			    ALL(dim_location[state_name]),
+			    CALCULATE([Unhealthy Day Count]),
+			    ,
+			    ASC,
+			    DENSE
+			)
+			
+			
+			
+			
+			```
+		formatString: 0
+		lineageTag: 72bdc9a2-1069-4554-b940-d07f1fba43da
+
+		changedProperty = Name
+
+	measure 'Unhealthy Days per 100k' = ```
+			
+			DIVIDE(
+			    [Unhealthy Day Count],
+			    SUM(dim_location[population])
+			) * 100000
+			
+			```
+		lineageTag: d7f9e81e-c152-4f17-a70e-e319a03a36ef
+
+		changedProperty = Name
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Drill AQI Change %' = ```
+			
+			VAR CurrentValue =
+			    AVERAGE(fact_daily_air_quality[aqi])
+			
+			VAR PriorValue =
+			    CALCULATE(
+			        AVERAGE(fact_daily_air_quality[aqi]),
+			        SAMEPERIODLASTYEAR(dim_date[date])
+			    )
+			
+			RETURN
+			DIVIDE(CurrentValue - PriorValue, PriorValue)
+			
+			
+			```
+		lineageTag: 779f64ff-a1d8-405e-a647-d75c7b27044a
 
 		changedProperty = Name
 

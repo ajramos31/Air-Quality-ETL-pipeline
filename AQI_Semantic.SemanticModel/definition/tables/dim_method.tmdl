@@ -1,0 +1,39 @@
+table dim_method
+	lineageTag: 88dac76e-6850-4acc-8e3b-89823cca92fd
+	sourceLineageTag: [dbo].[dim_method]
+
+	column method_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 64192368-791c-44eb-8db9-0edbc34b51df
+		sourceLineageTag: method_key
+		summarizeBy: none
+		sourceColumn: method_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column method_code
+		dataType: string
+		lineageTag: 04b804a0-dde8-49e4-ac24-8f82e787a9fa
+		sourceLineageTag: method_code
+		summarizeBy: none
+		sourceColumn: method_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column method_name
+		dataType: string
+		lineageTag: 4f54b196-8d77-418d-b573-bab5d6acd3d6
+		sourceLineageTag: method_name
+		summarizeBy: none
+		sourceColumn: method_name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_method = entity
+		mode: directLake
+		source
+			entityName: dim_method
+			schemaName: dbo
+			expressionSource: 'DirectLake - team2_WH'
+

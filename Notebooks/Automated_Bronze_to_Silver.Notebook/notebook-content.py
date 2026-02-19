@@ -54,18 +54,6 @@ bronze_df = spark.read.parquet(BRONZE_PATH)
 
 # CELL ********************
 
-# Delete later - just to see
-display(bronze_df)
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "synapse_pyspark"
-# META }
-
-# CELL ********************
-
 # Delete later or put in summary
 bronze_df = spark.read.parquet("Files/BRONZE")
 bronze_df.printSchema()

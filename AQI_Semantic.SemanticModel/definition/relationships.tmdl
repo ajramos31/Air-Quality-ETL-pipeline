@@ -1,0 +1,16 @@
+relationship 0be12e29-a0ec-23a8-bf19-99ce887441bf
+	fromColumn: fact_daily_air_quality.date_key
+	toColumn: dim_date.date_key
+
+relationship 4bbf861f-9a1d-d34b-ee41-7f16aaf12821
+	fromColumn: fact_daily_air_quality.location_key
+	toColumn: dim_location.location_key
+
+relationship f7dabb8a-2174-7781-6b15-3ae19a17c37f
+	fromColumn: fact_daily_air_quality.method_key
+	toColumn: dim_method.method_key
+
+relationship bb80ac21-1a34-c156-495e-e75b28d9b0c6
+	fromColumn: fact_daily_air_quality.parameter_key
+	toColumn: dim_parameter.parameter_key
+

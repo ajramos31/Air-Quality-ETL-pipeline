@@ -1,11 +1,11 @@
 table dim_parameter
-	lineageTag: e0e8d7d5-4057-4a72-9e00-b2d7bccfbbdc
+	lineageTag: 38652455-2ae9-4c28-aca7-44f11af03734
 	sourceLineageTag: [dbo].[dim_parameter]
 
 	column parameter_key
 		dataType: int64
 		formatString: 0
-		lineageTag: e65a3cce-bd24-41f6-a8c5-d59be1af058a
+		lineageTag: 74a86db9-1b65-49aa-bfda-ee58bb3d7a47
 		sourceLineageTag: parameter_key
 		summarizeBy: none
 		sourceColumn: parameter_key
@@ -14,7 +14,7 @@ table dim_parameter
 
 	column parameter_code
 		dataType: string
-		lineageTag: a1bc2b70-b2d8-4548-92c4-9778af4e0f37
+		lineageTag: b7915cdd-4f45-4a40-9e73-ed2950d144a2
 		sourceLineageTag: parameter_code
 		summarizeBy: none
 		sourceColumn: parameter_code
@@ -23,7 +23,7 @@ table dim_parameter
 
 	column parameter_name
 		dataType: string
-		lineageTag: 9b1cd5fe-b503-4a95-a1eb-d69199151470
+		lineageTag: 643f8a7f-d797-4c4d-b5bb-f01c19a8a18a
 		sourceLineageTag: parameter_name
 		summarizeBy: none
 		sourceColumn: parameter_name
@@ -32,7 +32,7 @@ table dim_parameter
 
 	column unit_of_measurement
 		dataType: string
-		lineageTag: d59625d4-ba0b-4807-b56f-7c6cb46519c1
+		lineageTag: 5b6398d1-1417-4e20-970b-e23a08207c69
 		sourceLineageTag: unit_of_measurement
 		summarizeBy: none
 		sourceColumn: unit_of_measurement
@@ -41,7 +41,7 @@ table dim_parameter
 
 	column category
 		dataType: string
-		lineageTag: 3f38a6f4-a2e7-4d25-9e92-5b761a1eb366
+		lineageTag: 52c15cfa-c4ce-40e5-aa16-c7ab0ee1bfff
 		sourceLineageTag: category
 		summarizeBy: none
 		sourceColumn: category

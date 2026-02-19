@@ -1,20 +1,10 @@
-table dim_parameter
-	lineageTag: e0e8d7d5-4057-4a72-9e00-b2d7bccfbbdc
-	sourceLineageTag: [dbo].[dim_parameter]
-
-	column parameter_key
-		dataType: int64
-		formatString: 0
-		lineageTag: e65a3cce-bd24-41f6-a8c5-d59be1af058a
-		sourceLineageTag: parameter_key
-		summarizeBy: none
-		sourceColumn: parameter_key
-
-		annotation SummarizationSetBy = Automatic
+table auto_dim_parameter
+	lineageTag: 3a66e4a5-deee-4f8c-9c53-f90a2666358e
+	sourceLineageTag: [dbo].[auto_dim_parameter]
 
 	column parameter_code
 		dataType: string
-		lineageTag: a1bc2b70-b2d8-4548-92c4-9778af4e0f37
+		lineageTag: 5a16ebd2-d784-4871-b869-d5e4c922ddd1
 		sourceLineageTag: parameter_code
 		summarizeBy: none
 		sourceColumn: parameter_code
@@ -23,7 +13,7 @@ table dim_parameter
 
 	column parameter_name
 		dataType: string
-		lineageTag: 9b1cd5fe-b503-4a95-a1eb-d69199151470
+		lineageTag: 9f15f87d-cabc-4696-965e-d73c549b5d11
 		sourceLineageTag: parameter_name
 		summarizeBy: none
 		sourceColumn: parameter_name
@@ -32,7 +22,7 @@ table dim_parameter
 
 	column unit_of_measurement
 		dataType: string
-		lineageTag: d59625d4-ba0b-4807-b56f-7c6cb46519c1
+		lineageTag: 6adbe208-fff8-4d34-8ebe-e6f07d417ea2
 		sourceLineageTag: unit_of_measurement
 		summarizeBy: none
 		sourceColumn: unit_of_measurement
@@ -41,17 +31,27 @@ table dim_parameter
 
 	column category
 		dataType: string
-		lineageTag: 3f38a6f4-a2e7-4d25-9e92-5b761a1eb366
+		lineageTag: 49f53fdd-8cc8-40e4-8ed3-0be98a5fd979
 		sourceLineageTag: category
 		summarizeBy: none
 		sourceColumn: category
 
 		annotation SummarizationSetBy = Automatic
 
-	partition dim_parameter = entity
+	column parameter_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 22344511-148e-4f62-8f96-77ad648da453
+		sourceLineageTag: parameter_key
+		summarizeBy: sum
+		sourceColumn: parameter_key
+
+		annotation SummarizationSetBy = Automatic
+
+	partition auto_dim_parameter = entity
 		mode: directLake
 		source
-			entityName: dim_parameter
+			entityName: auto_dim_parameter
 			schemaName: dbo
 			expressionSource: 'DirectLake - team2_WH'
 

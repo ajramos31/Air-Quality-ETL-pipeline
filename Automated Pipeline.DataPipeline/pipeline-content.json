@@ -9,7 +9,7 @@
           "parameters": {
             "bdate": {
               "value": {
-                "value": "@formatDateTime(addDays(utcNow(), -106), 'yyyyMMdd')",
+                "value": "@formatDateTime(addDays(utcNow(), -110), 'yyyyMMdd')",
                 "type": "Expression"
               },
               "type": "string"
@@ -120,7 +120,10 @@
                 "sink": {
                   "type": "DataWarehouseSink",
                   "tableOption": "autoCreate",
-                  "preCopyScript": "IF OBJECT_ID('dbo.' + '@{item()}', 'U') IS NOT NULL TRUNCATE TABLE dbo.@{item()}\n",
+                  "preCopyScript": {
+                    "value": "IF OBJECT_ID('dbo.' + '@{item()}', 'U') IS NOT NULL TRUNCATE TABLE dbo.@{item()}\n",
+                    "type": "Expression"
+                  },
                   "allowCopyCommand": true,
                   "copyCommandSettings": {},
                   "disableMetricsCollection": false,
@@ -181,16 +184,6 @@
           }
         ]
       }
-    ],
-    "parameters": {
-      "bdate": {
-        "type": "string",
-        "defaultValue": "@formatDateTime(utcNow(), 'yyyyMMdd')"
-      },
-      "edate": {
-        "type": "string",
-        "defaultValue": "@formatDateTime(utcNow(), 'yyyyMMdd')"
-      }
-    }
+    ]
   }
 }

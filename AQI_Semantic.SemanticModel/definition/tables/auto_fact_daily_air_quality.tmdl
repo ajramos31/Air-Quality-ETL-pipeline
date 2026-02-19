@@ -1,0 +1,143 @@
+table auto_fact_daily_air_quality
+	lineageTag: 71c5b9df-64f0-4cbd-a5a1-7e637f344dac
+	sourceLineageTag: [dbo].[auto_fact_daily_air_quality]
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 70dece3f-8f19-4b1a-a8b0-f0d1d3ffbc73
+		sourceLineageTag: date_key
+		summarizeBy: sum
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column location_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 4e4661b5-b6c7-4e27-b120-be7cf5896a2a
+		sourceLineageTag: location_key
+		summarizeBy: sum
+		sourceColumn: location_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column parameter_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 3d18e0fb-cbeb-40e0-8f4c-c005080a7951
+		sourceLineageTag: parameter_key
+		summarizeBy: sum
+		sourceColumn: parameter_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column poc
+		dataType: int64
+		formatString: 0
+		lineageTag: 7b97b275-1a2a-42ec-8b5d-bf75dfa7fde8
+		sourceLineageTag: poc
+		summarizeBy: sum
+		sourceColumn: poc
+
+		annotation SummarizationSetBy = Automatic
+
+	column method_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 07beeb0c-83cf-49d0-93cb-615b0d90c294
+		sourceLineageTag: method_key
+		summarizeBy: sum
+		sourceColumn: method_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column arithmetic_mean
+		dataType: double
+		lineageTag: 40b56c84-860d-4e4e-815c-1f568f0f0d47
+		sourceLineageTag: arithmetic_mean
+		summarizeBy: sum
+		sourceColumn: arithmetic_mean
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column first_max_value
+		dataType: double
+		lineageTag: 5a30610a-cf9f-4d7e-bc0f-694ea228d13b
+		sourceLineageTag: first_max_value
+		summarizeBy: sum
+		sourceColumn: first_max_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column first_max_hour
+		dataType: int64
+		formatString: 0
+		lineageTag: ffbc4717-bff5-4593-b38a-76af301f5fa7
+		sourceLineageTag: first_max_hour
+		summarizeBy: sum
+		sourceColumn: first_max_hour
+
+		annotation SummarizationSetBy = Automatic
+
+	column aqi
+		dataType: int64
+		formatString: 0
+		lineageTag: 7ced3742-5246-43ae-8f01-fd373d9e63e6
+		sourceLineageTag: aqi
+		summarizeBy: sum
+		sourceColumn: aqi
+
+		annotation SummarizationSetBy = Automatic
+
+	column observation_count
+		dataType: int64
+		formatString: 0
+		lineageTag: e0c93707-3657-4187-b551-a0693dcbf336
+		sourceLineageTag: observation_count
+		summarizeBy: sum
+		sourceColumn: observation_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column observation_percent
+		dataType: double
+		lineageTag: 1e0c7d24-8e91-40ac-8b79-5a20f9fde682
+		sourceLineageTag: observation_percent
+		summarizeBy: sum
+		sourceColumn: observation_percent
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column aqi_category
+		dataType: string
+		lineageTag: 13ddc249-2900-4f78-9c1b-378fe9442152
+		sourceLineageTag: aqi_category
+		summarizeBy: none
+		sourceColumn: aqi_category
+
+		annotation SummarizationSetBy = Automatic
+
+	column exceeds_standard
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: fb7bd2ff-8c9b-4c02-8c87-c54f7670be67
+		sourceLineageTag: exceeds_standard
+		summarizeBy: none
+		sourceColumn: exceeds_standard
+
+		annotation SummarizationSetBy = Automatic
+
+	partition auto_fact_daily_air_quality = entity
+		mode: directLake
+		source
+			entityName: auto_fact_daily_air_quality
+			schemaName: dbo
+			expressionSource: 'DirectLake - team2_WH'
+

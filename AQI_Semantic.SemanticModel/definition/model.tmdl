@@ -1,0 +1,25 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["DirectLake - team2_WH"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_ProTooling = ["RemoteModeling","DirectLakeOnOneLakeCreatedInDesktop"]
+
+ref table dim_method
+ref table fact_daily_air_quality
+ref table dim_date
+ref table dim_location
+ref table dim_parameter
+ref table auto_fact_daily_air_quality
+ref table auto_dim_date
+ref table auto_dim_location
+ref table auto_dim_parameter
+ref table auto_dim_method
+

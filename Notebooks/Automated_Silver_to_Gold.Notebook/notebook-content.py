@@ -292,3 +292,43 @@ for t in tables:
 # META   "language": "python",
 # META   "language_group": "synapse_pyspark"
 # META }
+
+# CELL ********************
+
+# Bronze
+bronze_df = spark.read.parquet("Files/BRONZE")
+print("BRONZE:")
+bronze_df.groupBy("year", "month").count().orderBy("year", "month").show()
+
+# Silver
+print("SILVER:")
+tables = ["auto_silver_daily_measurement", "auto_silver_site", "auto_silver_admin_area",
+          "auto_silver_parameter", "auto_silver_method", "auto_silver_cbsa"]
+for t in tables:
+    print(f"  {t}: {spark.table(t).count()} rows")
+
+# Gold
+print("GOLD:")
+tables = ["auto_fact_daily_air_quality", "auto_dim_date", "auto_dim_location",
+          "auto_dim_parameter", "auto_dim_method"]
+for t in tables:
+    print(f"  {t}: {spark.table(t).count()} rows")
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
+bronze_df = spark.read.parquet("Files/BRONZE")
+bronze_df.select("date_local").distinct().orderBy("date_local").show(50)
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }

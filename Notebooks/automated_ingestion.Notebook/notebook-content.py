@@ -36,8 +36,8 @@ from pyspark.sql import functions as F
 # Config
 API_EMAIL = "alfred.ramos3519@outlook.com"
 API_KEY = "bayhawk89"
-bdate = "20260101"
-edate = "20260101"
+bdate = "20251030"
+edate = "20251031"
 print("bdate:", bdate)
 print("edate:", edate)
 BASE_URL = "https://aqs.epa.gov/data/api/dailyData/byState"
@@ -210,7 +210,7 @@ for param in param_array:
             df = df.withColumn("date_local", F.to_date("date_local"))
             df = (df.withColumn("year", F.year("date_local")).withColumn("month", F.month("date_local")))
             df.repartition('state').write.format('parquet').mode('overwrite').option("partitionOverwriteMode", "dynamic") \
-            .partitionBy('year','month','state').save(OUTPUT_PATH)
+            .partitionBy('year', 'month', 'date_local', 'state').save(OUTPUT_PATH)
             
             print(f"{call_count}/{total_calls}; On State {state}: {len(data['Data'])} rows written.") # Logging
             total_rows += len(data['Data'])

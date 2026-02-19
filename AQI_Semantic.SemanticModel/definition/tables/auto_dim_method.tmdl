@@ -1,0 +1,39 @@
+table auto_dim_method
+	lineageTag: 8bd8884d-757d-491d-90fb-05dc679d576e
+	sourceLineageTag: [dbo].[auto_dim_method]
+
+	column method_code
+		dataType: string
+		lineageTag: 9bc4a63c-8c71-4936-aefa-e0708108f449
+		sourceLineageTag: method_code
+		summarizeBy: none
+		sourceColumn: method_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column method_name
+		dataType: string
+		lineageTag: 3a8b98f0-5537-4bc0-922a-3b1aa1c58e5e
+		sourceLineageTag: method_name
+		summarizeBy: none
+		sourceColumn: method_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column method_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 306ca164-5cc3-441a-9325-a11dc7402985
+		sourceLineageTag: method_key
+		summarizeBy: sum
+		sourceColumn: method_key
+
+		annotation SummarizationSetBy = Automatic
+
+	partition auto_dim_method = entity
+		mode: directLake
+		source
+			entityName: auto_dim_method
+			schemaName: dbo
+			expressionSource: 'DirectLake - team2_WH'
+
