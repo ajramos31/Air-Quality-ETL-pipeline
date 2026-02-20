@@ -115,6 +115,7 @@ aqs_daily_schema = StructType([
 
 # CELL ********************
 
+# Prevent pipeline wide failures
 def get_with_retry(url, params, max_attempts=4, base_sleep=2.0, timeout=(10, 350)):
     """
     Retries transient failures with exponential backoff.
@@ -146,7 +147,7 @@ def get_with_retry(url, params, max_attempts=4, base_sleep=2.0, timeout=(10, 350
 
 # CELL ********************
 
-years = [2026]
+years = [2025,2024,2026]
 for year in years:
     for month in range(1,13):
         month_rows = []

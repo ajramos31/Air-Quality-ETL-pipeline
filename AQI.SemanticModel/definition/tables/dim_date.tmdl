@@ -2,6 +2,30 @@ table dim_date
 	lineageTag: a85537dd-53c7-41b3-aa62-50e50bb1a18d
 	sourceLineageTag: [dbo].[dim_date]
 
+	measure 'Total Unhealthy Day' = ```
+			
+			CALCULATE(
+			    DISTINCTCOUNT(fact_daily_air_quality[date_key]),
+			    fact_daily_air_quality[aqi] > 100
+			)
+			
+			```
+		formatString: 0
+		lineageTag: e4254977-af81-4c0a-92ba-2f9e1474e5ff
+
+		changedProperty = Name
+
+	measure 'KPI Title' =
+			
+			IF(
+			    HASONEVALUE(dim_location[state_name]),
+			    "Unhealthy Air Exposure Rate",
+			    "Select a State"
+			)
+		lineageTag: f0c1b065-859c-466c-bda1-f82a8c627382
+
+		changedProperty = Name
+
 	column date_key
 		dataType: int64
 		formatString: 0

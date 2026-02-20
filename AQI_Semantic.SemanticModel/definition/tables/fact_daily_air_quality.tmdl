@@ -2,6 +2,51 @@ table fact_daily_air_quality
 	lineageTag: 27a3c890-1bd0-4720-a4d3-7e2c35ca6003
 	sourceLineageTag: [dbo].[fact_daily_air_quality]
 
+	measure 'MoM AQI % Change' =
+			
+			VAR CurrentYear = MAX(dim_date[year])
+			VAR CurrentMonth = MAX(dim_date[month])
+			
+			VAR BaseData =
+			    ADDCOLUMNS(
+			        FILTER(
+			            ALL(dim_date[year], dim_date[month]),
+			            dim_date[year] = CurrentYear
+			        ),
+			        "@AvgAQI",
+			            CALCULATE(
+			                AVERAGE(fact_daily_air_quality[aqi]),
+			                ALL(dim_date),
+			                dim_date[year] = CurrentYear,
+			                dim_date[month] = dim_date[month]
+			            )
+			    )
+			
+			VAR PrevAQI =
+			    MAXX(
+			        FILTER(
+			            BaseData,
+			            dim_date[month] = CurrentMonth - 1
+			        ),
+			        [@AvgAQI]
+			    )
+			
+			RETURN
+			    IF(
+			        CurrentMonth = 1,
+			        0,
+			        DIVIDE(
+			            CALCULATE(AVERAGE(fact_daily_air_quality[aqi]), ALL(dim_date), dim_date[year] = CurrentYear, dim_date[month] = CurrentMonth) - PrevAQI,
+			            PrevAQI,
+			            0
+			        )
+			    )
+		lineageTag: 2fb62f5e-a81c-4845-8bb4-bdaf9b41cec4
+
+		changedProperty = Name
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column date_key
 		dataType: int64
 		formatString: 0

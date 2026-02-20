@@ -235,9 +235,8 @@ for param in param_array:
 # Summary Cell
 end_time = datetime.now()
 
-print(f"\n{'='*50}")
 print(f"INGESTION COMPLETE")
-print(f"{'='*50}")
+
 print(f"  Date range:      {bdate} to {edate}")
 print(f"  Duration:        {end_time - start_time}")
 print(f"  Total calls:     {call_count}")

@@ -10,7 +10,7 @@ annotation PBI_QueryOrder = ["DirectLake - team2_WH"]
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 
-annotation PBI_ProTooling = ["RemoteModeling","DirectLakeOnOneLakeCreatedInDesktop"]
+annotation PBI_ProTooling = ["RemoteModeling","DirectLakeOnOneLakeCreatedInDesktop","DirectLakeOnOneLakeInWeb","WebModelingEdit","DaxQueryView_Desktop"]
 
 ref table dim_method
 ref table fact_daily_air_quality

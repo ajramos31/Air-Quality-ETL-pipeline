@@ -2,6 +2,45 @@ table dim_parameter
 	lineageTag: e0e8d7d5-4057-4a72-9e00-b2d7bccfbbdc
 	sourceLineageTag: [dbo].[dim_parameter]
 
+	measure 'Pollutant Display Name' =
+			
+			SWITCH(
+			    SELECTEDVALUE(dim_parameter[parameter_name]),
+			    "carbon monoxide", "Carbon Monoxide",
+			    "Nitrogen dioxide (N02)", "Nitrogen Dioxide",
+			    "Ozone", "Ozone",
+			    "PM10 Total 0-10um STP", "PM 10",
+			    "PM2.5 - Local Conditions", "PM 2.5",
+			    "Sulfur dioxide", "Sulfur Dioxide",
+			    SELECTEDVALUE(dim_parameter[parameter_name])
+			)
+		lineageTag: e1aefce4-a9ab-4dba-beb7-3719caa3d13d
+
+		changedProperty = Name
+
+	measure 'Exposure Score' =
+			
+			[Unhealthy Day Count] * SUM(dim_location[population])
+		formatString: 0
+		lineageTag: 6c790a04-657c-4ecf-b900-0d3dca1c9623
+
+		changedProperty = Name
+
+	measure '% of US Exposure' =
+			
+			DIVIDE(
+			    [Exposure Score],
+			    CALCULATE(
+			        [Exposure Score],
+			        ALL(dim_location[state_name])
+			    )
+			)
+		lineageTag: fda39bd3-32b4-4e6f-8571-914caa7aaeed
+
+		changedProperty = Name
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column parameter_key
 		dataType: int64
 		formatString: 0

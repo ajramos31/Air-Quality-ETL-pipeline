@@ -4,10 +4,9 @@ table dim_location
 
 	measure 'Selected State Title' = ```
 			
-			VAR SelectedState =
-			    SELECTEDVALUE(dim_location[state_name], "All States")
-			RETURN
-			    "Drilldown State: " & SelectedState
+			VAR st = COALESCE(SELECTEDVALUE(dim_location[state_name]), "All States")
+			VAR pol = COALESCE([Pollutant Display Name], "All Pollutants")
+			RETURN st & " - " & pol
 			
 			```
 		lineageTag: fc8551b6-45c5-40ef-8c05-7a9ec2166f19

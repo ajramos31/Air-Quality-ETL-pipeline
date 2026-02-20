@@ -52,32 +52,21 @@ table fact_daily_air_quality
 
 	measure 'Leading Pollutant by Avg AQI' = ```
 			
-			        VAR PollutantAvgAQI =
-			            CALCULATETABLE(
-			                ADDCOLUMNS(
-			                    ALL( dim_parameter[parameter_name] ),
-			                    "@AvgAQI",
-			                        CALCULATE(
-			                            AVERAGE( fact_daily_air_quality[aqi] )
-			                        )
-			                ),
-			                REMOVEFILTERS( dim_location ),
-			                REMOVEFILTERS( dim_parameter )
-			            )
-			        VAR MaxAvg =
-			            MAXX( PollutantAvgAQI, [@AvgAQI] )
-			        VAR TopPollutant =
-			            TOPN(
-			                1,
-			                FILTER( PollutantAvgAQI, [@AvgAQI] = MaxAvg ),
-			                [@AvgAQI], DESC
-			            )
-			        RETURN
-			            CONCATENATEX(
-			                TopPollutant,
-			                dim_parameter[parameter_name] & UNICHAR(10) & FORMAT( [@AvgAQI], "0.00" ),
-			                ", "
-			            )
+			CALCULATE(
+			    FIRSTNONBLANK(dim_parameter[parameter_name], 1),
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            fact_daily_air_quality,
+			            dim_parameter[parameter_name],
+			            "@AvgAQI", AVERAGE(fact_daily_air_quality[aqi])
+			        ),
+			        [@AvgAQI],
+			        DESC
+			    )
+			)
+			
+			
 			```
 		lineageTag: cc920546-b5de-4326-9325-7f4af3a3fb8c
 
@@ -203,24 +192,45 @@ table fact_daily_air_quality
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'MoM AQI Change %' = ```
+	measure 'MoM AQI % Change' = ```
 			
-			VAR CurrentValue =
-			    [Avg AQI]
+			VAR CurrentYear = MAX(dim_date[year])
+			VAR CurrentMonth = MAX(dim_date[month])
 			
-			VAR PreviousValue =
-			    CALCULATE(
-			        [Avg AQI],
-			        DATEADD(dim_date[date], -1, MONTH)
+			VAR BaseData =
+			    ADDCOLUMNS(
+			        FILTER(
+			            ALL(dim_date[year], dim_date[month]),
+			            dim_date[year] = CurrentYear
+			        ),
+			        "@AvgAQI",
+			            CALCULATE(
+			                AVERAGE(fact_daily_air_quality[aqi]),
+			                ALL(dim_date),
+			                dim_date[year] = CurrentYear,
+			                dim_date[month] = dim_date[month]
+			            )
+			    )
+			
+			VAR PrevAQI =
+			    MAXX(
+			        FILTER(
+			            BaseData,
+			            dim_date[month] = CurrentMonth - 1
+			        ),
+			        [@AvgAQI]
 			    )
 			
 			RETURN
-			IF(
-			    ISBLANK(PreviousValue) || PreviousValue = 0,
-			    BLANK(),
-			    DIVIDE(CurrentValue - PreviousValue, PreviousValue)
-			)
-			
+			    IF(
+			        CurrentMonth = 1,
+			        0,
+			        DIVIDE(
+			            CALCULATE(AVERAGE(fact_daily_air_quality[aqi]), ALL(dim_date), dim_date[year] = CurrentYear, dim_date[month] = CurrentMonth) - PrevAQI,
+			            PrevAQI,
+			            0
+			        )
+			    )
 			
 			```
 		lineageTag: 9d2f0ef0-82d5-4128-b69b-d70841ea8975
@@ -262,7 +272,7 @@ table fact_daily_air_quality
 			
 			RANKX(
 			    ALL(dim_location[state_name]),
-			    CALCULATE([Unhealthy Day Count]),
+			    [Unhealthy Day Count],
 			    ,
 			    ASC,
 			    DENSE
@@ -277,14 +287,16 @@ table fact_daily_air_quality
 
 		changedProperty = Name
 
-	measure 'Unhealthy Days per 100k' = ```
+	measure 'Unhealthy Days per 100k' =
 			
-			DIVIDE(
-			    [Unhealthy Day Count],
-			    SUM(dim_location[population])
-			) * 100000
-			
-			```
+			IF(
+			    NOT HASONEVALUE(dim_location[state_name]),
+			    BLANK(),
+			    DIVIDE(
+			        [Unhealthy Day Count],
+			        SUM(dim_location[population])
+			    ) * 100000
+			)
 		lineageTag: d7f9e81e-c152-4f17-a70e-e319a03a36ef
 
 		changedProperty = Name
@@ -302,12 +314,65 @@ table fact_daily_air_quality
 			        SAMEPERIODLASTYEAR(dim_date[date])
 			    )
 			
+			VAR YoY =
+			    DIVIDE(priorValue - currentValue, PriorValue)
+			
 			RETURN
-			DIVIDE(CurrentValue - PriorValue, PriorValue)
-			
-			
+			IF(
+			    ISBLANK(PriorValue) ||
+			    PriorValue = 0 ||
+			    ISBLANK(CurrentValue) ||
+			    CurrentValue = 0,  
+			    0,
+			    YoY
+			)
 			```
 		lineageTag: 779f64ff-a1d8-405e-a647-d75c7b27044a
+
+		changedProperty = Name
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Rank Color' =
+			
+			SWITCH(
+			    TRUE(),
+			    [State Rank] <= 10, "#2E7D32",   -- Green
+			    [State Rank] <= 40, "#F9A825",   -- Yellow
+			    "#C62828"                        -- Red
+			)
+		lineageTag: 2cff0833-13f9-4f02-92ba-3bb791164069
+
+		changedProperty = Name
+
+	measure 'MoM AQI Change' =
+			
+			VAR CurrentYear = MAX(dim_date[year])
+			VAR CurrentMonth = MAX(dim_date[month])
+			
+			VAR CurrentAQI =
+			    CALCULATE(
+			        AVERAGE(fact_daily_air_quality[aqi]),
+			        ALL(dim_date),
+			        dim_date[year] = CurrentYear,
+			        dim_date[month] = CurrentMonth
+			    )
+			
+			VAR PrevAQI =
+			    CALCULATE(
+			        AVERAGE(fact_daily_air_quality[aqi]),
+			        ALL(dim_date),
+			        dim_date[year] = CurrentYear,
+			        dim_date[month] = CurrentMonth - 1
+			    )
+			
+			RETURN
+			    IF(
+			        CurrentMonth = 1 || ISBLANK(PrevAQI),
+			        0,
+			        DIVIDE(CurrentAQI - PrevAQI, PrevAQI, 0)
+			    )
+		lineageTag: a9b3c874-b591-401f-9655-c14d0431a0ae
 
 		changedProperty = Name
 
@@ -428,10 +493,13 @@ table fact_daily_air_quality
 
 	column aqi_category
 		dataType: string
+		isHidden
 		lineageTag: 4435838e-6079-41a4-9334-bc47ef567d23
 		sourceLineageTag: aqi_category
 		summarizeBy: none
 		sourceColumn: aqi_category
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
